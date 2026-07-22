@@ -3,18 +3,23 @@
 @section('content')
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Kelola Statistik Kependudukan</h2>
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Kembali ke Dashboard</a>
+        <div>
+            <h3 class="fw-bold text-success m-0">Kelola Statistik Kependudukan</h3>
+            <small class="text-muted">Atur data jumlah warga dan statistik desa yang tampil di halaman depan</small>
+        </div>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary fw-semibold">
+            &larr; Kembali ke Dashboard
+        </a>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            <strong>Berhasil!</strong> {{ session('success') }}
+        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    <div class="card border-0 shadow-sm p-4 rounded-3">
+    <div class="card border-0 shadow-sm p-4 rounded-3 bg-white">
         <form action="{{ route('admin.statistik.update') }}" method="POST">
             @csrf
             @method('PUT')
@@ -51,7 +56,9 @@
                 </div>
 
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-success fw-bold px-4 py-2">Simpan Perubahan Statistik</button>
+                    <button type="submit" class="btn btn-success fw-bold px-4 py-2 shadow-sm">
+                        Simpan Perubahan Statistik
+                    </button>
                 </div>
             </div>
         </form>

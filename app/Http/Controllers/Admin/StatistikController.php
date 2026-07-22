@@ -10,20 +10,21 @@ class StatistikController extends Controller
 {
     public function index()
     {
-        // Ambil data statistik pertama, jika belum ada buat data default kosong
+        // Ambil data statistik pertama dari database, buat objek baru jika masih kosong
         $statistik = Statistik::first() ?? new Statistik();
+        
         return view('admin.statistik', compact('statistik'));
     }
 
     public function update(Request $request)
     {
         $request->validate([
-            'total_warga' => 'required|numeric|min:0',
-            'laki_laki' => 'required|numeric|min:0',
-            'perempuan' => 'required|numeric|min:0',
-            'kepala_keluarga' => 'required|numeric|min:0',
-            'rt' => 'required|numeric|min:0',
-            'rw' => 'required|numeric|min:0',
+            'total_warga'     => 'required|integer|min:0',
+            'laki_laki'       => 'required|integer|min:0',
+            'perempuan'       => 'required|integer|min:0',
+            'kepala_keluarga' => 'required|integer|min:0',
+            'rt'              => 'required|integer|min:0',
+            'rw'              => 'required|integer|min:0',
         ]);
 
         $statistik = Statistik::first();

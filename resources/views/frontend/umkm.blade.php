@@ -1,40 +1,50 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Lapak Digital UMKM - Desa Negarajati</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container py-5">
-        <h2 class="fw-bold text-success mb-2">Lapak Digital UMKM Negarajati</h2>
-        <p class="text-muted mb-4">Dukung perekonomian warga desa dengan membeli produk lokal terbaik.</p>
+@extends('layouts.app')
 
+@section('content')
+<!-- BANNER HEADER -->
+<div class="bg-success text-white py-5 mb-5 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold mb-2">Lapak Digital UMKM Negarajati</h1>
+        <p class="lead mb-0 fs-6 text-light">Dukung perekonomian warga desa dengan membeli produk lokal terbaik.</p>
+    </div>
+</div>
+
+<div class="container mb-5 pb-5">
+    @if($umkms->isEmpty())
+        <div class="alert alert-info border-0 shadow-sm p-4 rounded-3 text-center" role="alert">
+            <i class="bi bi-shop fs-3 d-block mb-2"></i>
+            <span class="fw-semibold">Belum ada produk UMKM yang terdaftar.</span>
+        </div>
+    @else
         <div class="row g-4">
-            @forelse($umkms as $item)
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0 overflow-hidden">
-                    @if($item->gambar)
-                        <img src="{{ asset('storage/' . $item->gambar) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                    @else
-                        <div class="bg-secondary text-white text-center py-5">Tidak Ada Foto</div>
-                    @endif
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-1">{{ $item->nama_usaha }}</h5>
-                        <p class="small text-muted mb-2">Pemilik: {{ $item->pemilik }}</p>
-                        <p class="card-text text-secondary">{{ $item->deskripsi }}</p>
-                    </div>
-                    <div class="card-footer bg-white border-0 pb-3">
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $item->telepon) }}" target="_blank" class="btn btn-success w-100">
-                            Hubungi Penjual (WhatsApp)
-                        </a>
+            @foreach($umkms as $item)
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                        @if($item->foto)
+                            <img src="{{ asset('storage/' . $item->foto) }}" class="card-img-top" style="height: 220px; object-fit: cover;" alt="{{ $item->nama_produk }}">
+                        @else
+                            <img src="https://via.placeholder.com/600x400?text=Produk+UMKM" class="card-img-top" style="height: 220px; object-fit: cover;" alt="Produk UMKM">
+                        @endif
+                        <div class="card-body p-4 d-flex flex-column">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill align-self-start mb-2 px-3">
+                                {{ $item->kategori ?? 'UMKM Desa' }}
+                            </span>
+                            <h5 class="fw-bold card-title mb-1">{{ $item->nama_produk }}</h5>
+                            <small class="text-muted mb-2"><i class="bi bi-person me-1"></i> Pemilik: {{ $item->nama_pemilik }}</small>
+                            <h6 class="fw-bold text-success fs-5 mb-3">Rp {{ number_format($item->harga, 0, ',', '.') }}</h6>
+                            <p class="card-text text-muted small mb-4 flex-grow-1">{{ Str::limit($item->deskripsi, 90) }}</p>
+                            
+                            @if($item->no_hp)
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $item->no_hp) }}?text=Halo%20{{ urlencode($item->nama_pemilik) }}%2C%20saya%20tertarik%20dengan%20produk%20{{ urlencode($item->nama_produk) }}" 
+                                   target="_blank" class="btn btn-success fw-bold w-100 py-2 rounded-pill shadow-sm">
+                                    <i class="bi bi-whatsapp me-2"></i> Hubungi Penjual
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            @empty
-            <div class="col-12"><div class="alert alert-info">Belum ada produk UMKM yang terdaftar.</div></div>
-            @endforelse
+            @endforeach
         </div>
-    </div>
-</body>
-</html>
+    @endif
+</div>
+@endsection

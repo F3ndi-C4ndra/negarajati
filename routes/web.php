@@ -8,7 +8,9 @@ use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\Admin\PengaduanController;
 use App\Http\Controllers\Admin\GaleriController;
-
+use App\Http\Controllers\Admin\StatistikController; // <--- Import StatistikController di sini
+use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
+use App\Http\Controllers\Admin\BannerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Website Desa Negarajati
@@ -73,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
     // Admin Statistik
     Route::get('/admin/statistik', [StatistikController::class, 'index'])->name('admin.statistik.index');
     Route::put('/admin/statistik', [StatistikController::class, 'update'])->name('admin.statistik.update');
+
     // Admin UMKM
     Route::get('/admin/umkm', [UmkmController::class, 'index'])->name('admin.umkm.index');
     Route::post('/admin/umkm', [UmkmController::class, 'store'])->name('admin.umkm.store');
@@ -80,11 +83,25 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Galeri
     Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
-
+    // Admin Banner Homepage
+Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.banner.index');
+Route::put('/admin/banner', [BannerController::class, 'update'])->name('admin.banner.update');
     // Profile Admin (Bawaan Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Admin Galeri
+Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
+Route::post('/admin/galeri', [GaleriController::class, 'store'])->name('admin.galeri.store');
+Route::delete('/admin/galeri/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
+
+// Admin Dokumen / Produk Hukum
+Route::get('/admin/dokumen', [DokumenController::class, 'adminIndex'])->name('admin.dokumen.index');
+Route::post('/admin/dokumen', [DokumenController::class, 'store'])->name('admin.dokumen.store');
+Route::delete('/admin/dokumen/{id}', [DokumenController::class, 'destroy'])->name('admin.dokumen.destroy');
+// Admin Profil Desa
+Route::get('/admin/profil', [AdminProfilController::class, 'index'])->name('admin.profil.index');
+Route::put('/admin/profil', [AdminProfilController::class, 'update'])->name('admin.profil.update');
 
 });
 
