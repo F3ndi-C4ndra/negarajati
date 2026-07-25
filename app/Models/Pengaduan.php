@@ -9,13 +9,12 @@ class Pengaduan extends Model
 {
     use HasFactory;
 
-    // Izinkan semua kolom di bawah ini diisi secara mass assignment
     protected $fillable = [
         'nama',
-        'nik',
         'telepon',
         'judul',
         'isi',
         'status',
+        'tanggapan',
     ];
 }

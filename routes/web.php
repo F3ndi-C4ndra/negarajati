@@ -8,9 +8,10 @@ use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\Admin\PengaduanController;
 use App\Http\Controllers\Admin\GaleriController;
-use App\Http\Controllers\Admin\StatistikController; // <--- Import StatistikController di sini
+use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
 use App\Http\Controllers\Admin\BannerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Website Desa Negarajati
@@ -24,12 +25,16 @@ use App\Http\Controllers\Admin\BannerController;
 // Halaman Utama / Landing Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Route Cek Status Pengaduan Warga
+Route::get('/cek-pengaduan', [HomeController::class, 'cekPengaduan'])->name('pengaduan.cek');
+
 // Form Pengaduan Warga (Submit)
 Route::post('/pengaduan', [HomeController::class, 'storePengaduan'])->name('pengaduan.store');
 
 // Halaman Profil Desa
 Route::get('/profil', function () {
-    return view('frontend.profil');
+    $profil = \App\Models\ProfilDesa::first();
+    return view('frontend.profil', compact('profil'));
 })->name('profil');
 
 // Halaman Berita Publik
@@ -59,6 +64,14 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    // Admin Profil Desa
+    Route::get('/admin/profil', [AdminProfilController::class, 'index'])->name('admin.profil.index');
+    Route::put('/admin/profil', [AdminProfilController::class, 'update'])->name('admin.profil.update');
+
+    // Admin Banner Homepage
+    Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.banner.index');
+    Route::put('/admin/banner', [BannerController::class, 'update'])->name('admin.banner.update');
+
     // Admin Berita
     Route::get('/admin/berita', [BeritaController::class, 'index'])->name('admin.berita.index');
     Route::get('/admin/berita/create', [BeritaController::class, 'create'])->name('admin.berita.create');
@@ -83,25 +96,18 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Galeri
     Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
-    // Admin Banner Homepage
-Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.banner.index');
-Route::put('/admin/banner', [BannerController::class, 'update'])->name('admin.banner.update');
+    Route::post('/admin/galeri', [GaleriController::class, 'store'])->name('admin.galeri.store');
+    Route::delete('/admin/galeri/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
+
+    // Admin Dokumen / Produk Hukum
+    Route::get('/admin/dokumen', [DokumenController::class, 'adminIndex'])->name('admin.dokumen.index');
+    Route::post('/admin/dokumen', [DokumenController::class, 'store'])->name('admin.dokumen.store');
+    Route::delete('/admin/dokumen/{id}', [DokumenController::class, 'destroy'])->name('admin.dokumen.destroy');
+
     // Profile Admin (Bawaan Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Admin Galeri
-Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
-Route::post('/admin/galeri', [GaleriController::class, 'store'])->name('admin.galeri.store');
-Route::delete('/admin/galeri/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
-
-// Admin Dokumen / Produk Hukum
-Route::get('/admin/dokumen', [DokumenController::class, 'adminIndex'])->name('admin.dokumen.index');
-Route::post('/admin/dokumen', [DokumenController::class, 'store'])->name('admin.dokumen.store');
-Route::delete('/admin/dokumen/{id}', [DokumenController::class, 'destroy'])->name('admin.dokumen.destroy');
-// Admin Profil Desa
-Route::get('/admin/profil', [AdminProfilController::class, 'index'])->name('admin.profil.index');
-Route::put('/admin/profil', [AdminProfilController::class, 'update'])->name('admin.profil.update');
 
 });
 

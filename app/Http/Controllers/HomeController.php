@@ -22,7 +22,20 @@ class HomeController extends Controller
         // Mengirimkan variabel ke view frontend/home.blade.php
         return view('frontend.home', compact('profil', 'statistik', 'beritas', 'umkms'));
     }
+public function cekPengaduan(Request $request)
+{
+    $pengaduans = collect();
+    $search = $request->input('telepon');
 
+    if ($search) {
+        // Cari aduan berdasarkan Nomor HP/WhatsApp yang dimasukkan
+        $pengaduans = \App\Models\Pengaduan::where('telepon', 'LIKE', "%{$search}%")
+                        ->latest()
+                        ->get();
+    }
+
+    return view('frontend.cek-pengaduan', compact('pengaduans', 'search'));
+}
     public function storePengaduan(Request $request)
     {
         $request->validate([

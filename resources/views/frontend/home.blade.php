@@ -333,6 +333,11 @@
                                     <i class="bi bi-send me-1"></i> Kirim Pengaduan
                                 </button>
                             </div>
+                            <div class="text-center mt-3">
+    <small class="text-muted">Sudah pernah mengirim pengaduan? 
+        <a href="{{ route('pengaduan.cek') }}" class="fw-bold text-success text-decoration-none">Cek Status Aduan Anda di Sini &rarr;</a>
+    </small>
+</div>
                         </div>
                     </form>
                 </div>
